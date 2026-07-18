@@ -94,8 +94,3 @@ pytest -m integration # network/storage integration tests
 docker build -t sra .
 docker run --env-file .env -p 8000:8000 sra
 ```
-
-## Status
-
-Phase 2 of 12: repository skeleton and tooling. Interfaces (Phase 3) land next;
-packages are intentionally empty until their phase.
