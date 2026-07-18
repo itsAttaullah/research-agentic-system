@@ -1,3 +1,16 @@
-"""Research Runtime: the decision loop, state machine, action validator, and
-DI composition root. Owns HOW research executes; contains zero research logic.
-"""
+"""Provider-independent research orchestration and lifecycle management."""
+
+from sra.runtime.dependencies import RuntimeDependencies
+from sra.runtime.lifecycle import StateController
+from sra.runtime.result import RunOutcome, RuntimeOptions
+from sra.runtime.runtime import ResearchRuntime
+from sra.runtime.validation import ActionValidator
+
+__all__ = [
+    "ActionValidator",
+    "ResearchRuntime",
+    "RunOutcome",
+    "RuntimeDependencies",
+    "RuntimeOptions",
+    "StateController",
+]
