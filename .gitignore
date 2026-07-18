@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Tooling caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment & secrets
+.env
+*.env.local
+
+# Runtime artifacts (checkpoints, databases, logs, reports)
+data/
+*.sqlite3
+*.duckdb
+logs/
+reports/out/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/

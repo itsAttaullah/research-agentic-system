@@ -1,0 +1,124 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sra"
+version = "0.1.0"
+description = "Strategic Research Agent - an autonomous, production-grade research system."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "SRA Team" }]
+keywords = ["agents", "research", "llm", "autonomous-systems"]
+
+dependencies = [
+    # API layer
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    # Domain models & configuration
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    # LLM providers (behind the LLMClient port; either can serve a run)
+    "openai>=1.40",
+    "anthropic>=0.34",
+    # HTTP / scraping / parsing
+    "httpx>=0.27",
+    "beautifulsoup4>=4.12",
+    "playwright>=1.46",
+    "lxml>=5.2",
+    # Documents
+    "pymupdf>=1.24",
+    "markdown>=3.6",
+    # Storage: SQLite = control plane, DuckDB = knowledge analytics
+    "aiosqlite>=0.20",
+    "duckdb>=1.0",
+    # Reporting templates
+    "jinja2>=3.1",
+    # Resilience & observability
+    "tenacity>=8.5",
+    "structlog>=24.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "types-markdown",
+    "types-beautifulsoup4",
+]
+
+[project.scripts]
+sra = "sra.cli.main:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sra"]
+
+# ---------------------------------------------------------------------------
+# Ruff - lint + format
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["sra", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "RET", # flake8-return
+    "ARG", # unused arguments
+    "PTH", # pathlib over os.path
+    "N",   # pep8-naming
+]
+ignore = [
+    "E501", # line length handled by the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ARG"] # fixtures often accept unused params
+
+# ---------------------------------------------------------------------------
+# Mypy - strict typing at module boundaries
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+plugins = ["pydantic.mypy"]
+strict = true
+warn_unreachable = true
+show_error_codes = true
+namespace_packages = true
+mypy_path = "."
+
+[[tool.mypy.overrides]]
+module = ["fitz.*", "duckdb.*", "playwright.*"]
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra --strict-markers"
+markers = [
+    "integration: tests that hit real network/storage backends",
+]
+
+[tool.coverage.run]
+source = ["sra"]
+branch = true

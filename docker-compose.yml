@@ -1,0 +1,12 @@
+services:
+  sra:
+    build: .
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist checkpoints, SQLite control DB, and DuckDB knowledge store
+      - sra-data:/app/data
+
+volumes:
+  sra-data:
