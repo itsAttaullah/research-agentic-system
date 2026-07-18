@@ -42,8 +42,7 @@ class TaskManager(Protocol):
         """Select the highest-priority ready task, or None if the queue is empty."""
         ...
 
-    async def mark_done(self, ctx: RunContext, task_id: UUID) -> None:
-        ...
+    async def mark_done(self, ctx: RunContext, task_id: UUID) -> None: ...
 
     async def enqueue_from_questions(
         self,

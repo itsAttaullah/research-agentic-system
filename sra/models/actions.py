@@ -52,10 +52,6 @@ class FinalizeAction(BaseModel):
 
 
 AgentAction = Annotated[
-    InvokeToolAction
-    | UpdatePlanAction
-    | ReflectAction
-    | RequestCriticAction
-    | FinalizeAction,
+    InvokeToolAction | UpdatePlanAction | ReflectAction | RequestCriticAction | FinalizeAction,
     Field(discriminator="kind"),
 ]
