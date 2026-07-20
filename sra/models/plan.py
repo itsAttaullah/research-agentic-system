@@ -21,6 +21,10 @@ class Investigation(BaseModel):
     priority: int = Field(default=50, ge=0, le=100, description="Higher = more urgent.")
     status: TaskStatus = TaskStatus.PENDING
     related_open_questions: list[str] = Field(default_factory=list)
+    suggested_tools: list[str] = Field(
+        default_factory=list,
+        description="Optional tool hints for tasks derived from this investigation.",
+    )
 
 
 class ResearchTask(BaseModel):
