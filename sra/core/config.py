@@ -36,6 +36,19 @@ class Settings(BaseSettings):
         default=None,
         validation_alias="GOOGLE_SEARCH_CX",
     )
+    youtube_api_key: str | None = Field(
+        default=None,
+        validation_alias="YOUTUBE_API_KEY",
+    )
+    github_token: str | None = Field(
+        default=None,
+        validation_alias="GITHUB_TOKEN",
+    )
+    local_document_roots: str = Field(
+        default="./data",
+        validation_alias="SRA_LOCAL_DOCUMENT_ROOTS",
+        description="Comma-separated allowed roots for local_document_search.",
+    )
 
     # Storage
     data_dir: Path = Field(default=Path("./data"), validation_alias="SRA_DATA_DIR")
