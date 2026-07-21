@@ -58,6 +58,10 @@ class ReflectionError(SRAError):
     """Reflection Engine could not produce a valid reflection result."""
 
 
+class CritiqueError(SRAError):
+    """Critic could not produce a valid critique result."""
+
+
 class KnowledgeError(SRAError):
     """Knowledge extraction or store failure."""
 
