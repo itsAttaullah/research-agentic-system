@@ -54,8 +54,6 @@ class PlanningError(SRAError):
     """Planner could not produce or revise a valid plan."""
 
 
-<<<<<<< Updated upstream
-=======
 class ReflectionError(SRAError):
     """Reflection Engine could not produce a valid reflection result."""
 
@@ -64,7 +62,6 @@ class CritiqueError(SRAError):
     """Critic could not produce a valid critique result."""
 
 
->>>>>>> Stashed changes
 class KnowledgeError(SRAError):
     """Knowledge extraction or store failure."""
 
