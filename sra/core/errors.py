@@ -54,6 +54,10 @@ class PlanningError(SRAError):
     """Planner could not produce or revise a valid plan."""
 
 
+class ReflectionError(SRAError):
+    """Reflection Engine could not produce a valid reflection result."""
+
+
 class KnowledgeError(SRAError):
     """Knowledge extraction or store failure."""
 
