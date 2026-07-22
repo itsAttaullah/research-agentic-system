@@ -1,6 +1,16 @@
-"""Shared pytest fixtures.
+"""Shared pytest fixtures for unit and integration tests."""
 
-Populated per phase: fake LLM clients, in-memory storage backends, and a
-runtime harness with mocked collaborators arrive with Phase 4 (runtime) and
-Phase 12 (full test suite).
-"""
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+from sra.storage import SqliteControlPlane
+
+
+@pytest.fixture
+async def control_plane(tmp_path: Path) -> SqliteControlPlane:
+    db = SqliteControlPlane(tmp_path / "control.sqlite3")
+    await db.connect()
+    yield db
+    await db.close()
