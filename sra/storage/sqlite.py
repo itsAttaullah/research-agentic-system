@@ -1,4 +1,4 @@
-"""Async SQLite control-plane database (runs, memory, sources, checkpoints later)."""
+"""Async SQLite control-plane database (runs, memory, sources, checkpoints)."""
 
 from __future__ import annotations
 
@@ -38,6 +38,17 @@ CREATE INDEX IF NOT EXISTS idx_long_term_kind
 
 CREATE INDEX IF NOT EXISTS idx_long_term_content
     ON long_term_memory(content);
+
+CREATE TABLE IF NOT EXISTS checkpoints (
+    snapshot_id TEXT PRIMARY KEY,
+    run_id TEXT NOT NULL,
+    state TEXT NOT NULL,
+    payload TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_checkpoints_run_created
+    ON checkpoints(run_id, created_at DESC);
 """
 
 
