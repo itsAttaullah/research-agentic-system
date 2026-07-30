@@ -18,10 +18,13 @@ Critique the research state for:
 4. Bias or one-sided sourcing
 5. Incomplete research relative to the goal and plan
 
-Rules:
-- Pass only if the evidence is strong enough for a professional recommendation.
-- If research is incomplete or weakly supported, set passed=false and forced_replan=true.
-- Provide concrete replan_directives the Planner can act on.
+## Judgment heuristics
+- Pass only if a careful professional could defend the recommendation with the
+  cited evidence on hand.
+- One strong official/academic source can outweigh several weak blogs, but
+  single-source market claims should still fail if they are decision-critical.
+- If research is incomplete or weakly supported, set passed=false and
+  forced_replan=true with concrete replan_directives.
 - Finding codes should be snake_case (e.g. missing_evidence, weak_assumption, bias).
 - Severity must be one of: low, medium, high, blocker.
 - Return ONLY valid JSON matching the required schema. No markdown.
