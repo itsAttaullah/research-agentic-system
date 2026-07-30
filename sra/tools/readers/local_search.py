@@ -33,10 +33,13 @@ class LocalDocumentSearchOutput(BaseModel):
 
 class LocalDocumentSearchTool(BaseTool):
     name = "local_document_search"
-    description = "Search local text documents under a root directory by filename and content."
+    description = (
+        "Search local text documents under allowed roots by filename and content. "
+        "Use for private corpora already on disk; cannot access the public web."
+    )
     input_schema = LocalDocumentSearchInput
     output_schema = LocalDocumentSearchOutput
-    tags = ["search", "local", "document"]
+    tags = ["local", "document", "reader"]
 
     def __init__(self, *, allowed_roots: list[Path] | None = None) -> None:
         self._allowed_roots = [path.resolve() for path in (allowed_roots or [])]

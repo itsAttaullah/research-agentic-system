@@ -10,6 +10,7 @@ from sra.confidence import EvidenceConfidenceEstimator
 from sra.core.config import Settings
 from sra.core.ports.llm import LLMClient
 from sra.critic import LLMCritic
+from sra.llm import build_llm_client
 from sra.memory import SqliteMemoryManager
 from sra.observability import StructlogExecutionLogger
 from sra.planner import LLMPlanner
@@ -40,11 +41,12 @@ def build_runtime(
     db = control_db or SqliteControlPlane(cfg.control_db)
     reports_dir = Path(report_output_dir) if report_output_dir else cfg.data_dir / "reports"
 
+    tools = create_default_registry(cfg)
     dependencies = RuntimeDependencies(
         planner=LLMPlanner(llm),
         task_manager=DefaultTaskManager(),
         research_engine=LLMResearchEngine(llm),
-        tools=create_default_registry(cfg),
+        tools=tools,
         memory=SqliteMemoryManager(db),
         reflection=LLMReflectionEngine(llm),
         critic=LLMCritic(llm),
@@ -54,5 +56,24 @@ def build_runtime(
         logger=StructlogExecutionLogger(),
         reports=ResearchReportGenerator(output_dir=reports_dir),
     )
-    options = RuntimeOptions(confidence_threshold=cfg.confidence_threshold)
+    options = RuntimeOptions(
+        confidence_threshold=cfg.confidence_threshold,
+        tool_autonomy=cfg.tool_autonomy,
+    )
     return ResearchRuntime(dependencies, options=options)
+
+
+def build_runtime_from_settings(
+    *,
+    settings: Settings | None = None,
+    control_db: SqliteControlPlane | None = None,
+    report_output_dir: Path | str | None = None,
+) -> ResearchRuntime:
+    """Compose a runtime using the configured OpenAI/Anthropic adapter."""
+    cfg = settings or Settings()
+    return build_runtime(
+        build_llm_client(cfg),
+        settings=cfg,
+        control_db=control_db,
+        report_output_dir=report_output_dir,
+    )

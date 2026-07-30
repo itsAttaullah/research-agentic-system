@@ -12,7 +12,10 @@ from sra.tools.schemas import ParseTextInput, ParseTextOutput
 
 class HtmlParserTool(BaseTool):
     name = "html_parser"
-    description = "Parse raw HTML into title, visible text, and links."
+    description = (
+        "Parse raw HTML you already have into title, visible text, and links. "
+        "Do not use when you only have a URL — use website_reader instead."
+    )
     input_schema = ParseTextInput
     output_schema = ParseTextOutput
     tags = ["parse", "html"]

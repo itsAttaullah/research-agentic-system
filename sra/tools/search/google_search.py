@@ -13,7 +13,12 @@ from sra.tools.schemas import SearchHit, SearchInput, SearchOutput
 
 class GoogleSearchTool(BaseTool):
     name = "google_search"
-    description = "Search the public web via Google Programmable Search."
+    description = (
+        "Search the general public web for discovery. "
+        "Use for broad fact-finding and finding candidate URLs. "
+        "Prefer news_search for recent coverage and academic_paper_search for papers. "
+        "Input: natural-language query + limit."
+    )
     input_schema = SearchInput
     output_schema = SearchOutput
     tags = ["search", "web"]

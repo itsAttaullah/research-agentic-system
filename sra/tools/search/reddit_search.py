@@ -13,7 +13,10 @@ from sra.tools.schemas import SearchHit, SearchInput, SearchOutput
 
 class RedditSearchTool(BaseTool):
     name = "reddit_search"
-    description = "Search Reddit posts and discussions for a query."
+    description = (
+        "Search Reddit discussions for practitioner anecdotes and objections. "
+        "Treat results as weak evidence unless corroborated elsewhere."
+    )
     input_schema = SearchInput
     output_schema = SearchOutput
     tags = ["search", "community"]

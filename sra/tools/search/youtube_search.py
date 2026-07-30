@@ -13,7 +13,10 @@ from sra.tools.schemas import SearchHit, SearchInput, SearchOutput
 
 class YouTubeSearchTool(BaseTool):
     name = "youtube_search"
-    description = "Search YouTube videos relevant to a research query."
+    description = (
+        "Search YouTube for talks/demos relevant to the query. "
+        "Useful for product walkthroughs; weak for quantitative claims."
+    )
     input_schema = SearchInput
     output_schema = SearchOutput
     tags = ["search", "youtube", "media"]

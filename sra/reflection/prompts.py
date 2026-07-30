@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 
 from sra.core.context import RunContext
+from sra.core.context_budget import compact_tool_result
 from sra.models.tools import ToolResult
 
 REFLECTION_SYSTEM_PROMPT = """\
@@ -13,15 +14,22 @@ You are the Reflection Engine for an autonomous Strategic Research Agent.
 After each research step, evaluate progress honestly and decide what should
 happen next. Your output influences planning and task selection.
 
-Evaluate:
+## Evaluate
 1. Which open questions were answered by the latest evidence?
 2. Which new questions appeared?
 3. Do we trust the latest source / tool result?
 4. Is evidence quality sufficient to continue on the current path?
 5. Should the research strategy change?
 
-Rules:
-- Be concrete. Prefer specific questions over vague advice.
+## Judgment heuristics
+- Treat anecdotes and marketing pages as weak evidence unless corroborated.
+- If the tool failed or returned empty results, propose concrete next questions
+  rather than declaring success.
+- Set strategy_should_change=true only when the current plan cannot cover a
+  newly discovered critical gap, not for routine follow-up searches.
+- Prefer specific, answerable new_questions over vague themes.
+
+## Output rules
 - Do not invent tool calls.
 - If strategy should change, explain why in strategy_change_summary.
 - Return ONLY valid JSON matching the required schema. No markdown.
@@ -81,9 +89,7 @@ def reflection_user_prompt(
                 else None
             ),
         },
-        "latest_tool_result": (
-            latest_tool_result.model_dump(mode="json") if latest_tool_result else None
-        ),
+        "latest_tool_result": compact_tool_result(latest_tool_result),
         "current_confidence": ctx.confidence.model_dump(mode="json"),
         "instruction": (
             "Return JSON with keys: answered_questions, new_questions, "

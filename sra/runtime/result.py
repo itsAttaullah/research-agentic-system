@@ -1,10 +1,13 @@
 """Public runtime options and run outcome models."""
 
 from dataclasses import dataclass
+from typing import Literal
 
 from sra.core.context import RunContext
 from sra.models.enums import ReportFormat
 from sra.models.reporting import ReportArtifact
+
+AutonomyLevel = Literal["safe", "standard", "unrestricted"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -14,6 +17,7 @@ class RuntimeOptions:
     confidence_threshold: float = 0.7
     report_formats: tuple[ReportFormat, ...] = (ReportFormat.MARKDOWN,)
     max_consecutive_invalid_actions: int = 2
+    tool_autonomy: AutonomyLevel = "standard"
 
     def __post_init__(self) -> None:
         if not 0.0 <= self.confidence_threshold <= 1.0:
@@ -24,6 +28,9 @@ class RuntimeOptions:
             raise ValueError(msg)
         if self.max_consecutive_invalid_actions < 0:
             msg = "max_consecutive_invalid_actions cannot be negative"
+            raise ValueError(msg)
+        if self.tool_autonomy not in {"safe", "standard", "unrestricted"}:
+            msg = "tool_autonomy must be safe, standard, or unrestricted"
             raise ValueError(msg)
 
 

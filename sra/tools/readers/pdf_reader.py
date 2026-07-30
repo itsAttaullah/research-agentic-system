@@ -34,7 +34,10 @@ class PdfReaderOutput(BaseModel):
 
 class PdfReaderTool(BaseTool):
     name = "pdf_reader"
-    description = "Extract text from a local PDF path or a PDF URL."
+    description = (
+        "Extract text from a local PDF path or a PDF URL. "
+        "Use for whitepapers, filings, and reports once located."
+    )
     input_schema = PdfReaderInput
     output_schema = PdfReaderOutput
     tags = ["reader", "pdf", "document"]
