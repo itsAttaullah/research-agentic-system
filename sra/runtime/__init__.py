@@ -1,6 +1,6 @@
 """Provider-independent research orchestration and lifecycle management."""
 
-from sra.runtime.composition import build_runtime
+from sra.runtime.composition import build_runtime, build_runtime_from_settings
 from sra.runtime.dependencies import RuntimeDependencies
 from sra.runtime.lifecycle import StateController
 from sra.runtime.result import RunOutcome, RuntimeOptions
@@ -15,4 +15,5 @@ __all__ = [
     "RuntimeOptions",
     "StateController",
     "build_runtime",
+    "build_runtime_from_settings",
 ]
