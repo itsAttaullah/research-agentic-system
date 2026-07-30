@@ -13,6 +13,7 @@ from sra.models.actions import (
     RequestCriticAction,
     UpdatePlanAction,
 )
+from sra.tools.permissions import AutonomyLevel, required_autonomy_for_tags, tool_allowed
 
 _ACTION_TYPES = (
     InvokeToolAction,
@@ -26,8 +27,14 @@ _ACTION_TYPES = (
 class ActionValidator:
     """Enforces runtime safety rules before dispatching an action."""
 
-    def __init__(self, tools: ToolRegistry) -> None:
+    def __init__(
+        self,
+        tools: ToolRegistry,
+        *,
+        autonomy: AutonomyLevel = "standard",
+    ) -> None:
         self._tools = tools
+        self._autonomy = autonomy
 
     def validate(self, action: AgentAction, ctx: RunContext) -> None:
         if not isinstance(action, _ACTION_TYPES):
@@ -45,12 +52,24 @@ class ActionValidator:
 
     def _validate_tool_action(self, action: InvokeToolAction, ctx: RunContext) -> None:
         try:
-            self._tools.get(action.tool_name)
+            tool = self._tools.get(action.tool_name)
         except (KeyError, LookupError, ToolNotFoundError) as exc:
             raise InvalidActionError(
                 f"Tool is not registered: {action.tool_name}",
                 details={"tool_name": action.tool_name},
             ) from exc
+
+        tags = list(getattr(tool, "tags", []) or [])
+        if not tool_allowed(tags=tags, autonomy=self._autonomy):
+            raise InvalidActionError(
+                f"Tool '{action.tool_name}' blocked by tool autonomy policy",
+                details={
+                    "tool_name": action.tool_name,
+                    "autonomy": self._autonomy,
+                    "required": required_autonomy_for_tags(tags),
+                    "tags": tags,
+                },
+            )
 
         if action.related_task_id is not None and action.related_task_id not in {
             task.id for task in ctx.tasks

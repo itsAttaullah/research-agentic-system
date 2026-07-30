@@ -13,7 +13,11 @@ from sra.tools.schemas import SearchHit, SearchInput, SearchOutput
 
 class NewsSearchTool(BaseTool):
     name = "news_search"
-    description = "Search recent news coverage using Google Programmable Search."
+    description = (
+        "Search recent news coverage (not the full historical web). "
+        "Use when recency matters: launches, regulations, funding, incidents. "
+        "Do not use for evergreen background research — prefer google_search."
+    )
     input_schema = SearchInput
     output_schema = SearchOutput
     tags = ["search", "news"]

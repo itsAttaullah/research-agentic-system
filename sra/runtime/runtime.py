@@ -42,7 +42,10 @@ class ResearchRuntime:
         self._deps = dependencies
         self._options = options or RuntimeOptions()
         self._states = StateController(dependencies.checkpoints, dependencies.logger)
-        self._validator = ActionValidator(dependencies.tools)
+        self._validator = ActionValidator(
+            dependencies.tools,
+            autonomy=self._options.tool_autonomy,
+        )
 
     async def start(
         self,

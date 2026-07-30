@@ -14,7 +14,11 @@ from sra.tools.schemas import TextDocumentInput, TextDocumentOutput
 
 class WebsiteReaderTool(BaseTool):
     name = "website_reader"
-    description = "Fetch a web page and extract its readable text content."
+    description = (
+        "Fetch a URL and extract readable page text. "
+        "Use after search tools identify promising links. "
+        "Prefer this over html_parser when you only have a URL (not raw HTML)."
+    )
     input_schema = TextDocumentInput
     output_schema = TextDocumentOutput
     tags = ["fetch", "reader", "web"]

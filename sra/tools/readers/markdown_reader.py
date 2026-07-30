@@ -33,7 +33,10 @@ class MarkdownReaderOutput(BaseModel):
 
 class MarkdownReaderTool(BaseTool):
     name = "markdown_reader"
-    description = "Read markdown from text or a local file and return raw + rendered text."
+    description = (
+        "Read markdown from text or a local file path and return raw + rendered text. "
+        "Use for notes already available locally."
+    )
     input_schema = MarkdownReaderInput
     output_schema = MarkdownReaderOutput
     tags = ["reader", "markdown", "local"]

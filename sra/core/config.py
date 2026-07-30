@@ -16,6 +16,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
+        populate_by_name=True,
     )
 
     # LLM
@@ -74,6 +75,12 @@ class Settings(BaseSettings):
         ge=0.0,
         le=1.0,
         validation_alias="SRA_CONFIDENCE_THRESHOLD",
+    )
+
+    # Autonomy: safe (local/compute only) | standard (+ network search/fetch) | unrestricted
+    tool_autonomy: Literal["safe", "standard", "unrestricted"] = Field(
+        default="standard",
+        validation_alias="SRA_TOOL_AUTONOMY",
     )
 
     def ensure_data_dir(self) -> None:

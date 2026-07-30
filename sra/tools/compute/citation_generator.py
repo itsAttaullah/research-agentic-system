@@ -27,7 +27,10 @@ class CitationGeneratorOutput(BaseModel):
 
 class CitationGeneratorTool(BaseTool):
     name = "citation_generator"
-    description = "Format a bibliographic citation in APA, Markdown, or plain text."
+    description = (
+        "Format a bibliographic citation in APA, Markdown, or plain text. "
+        "Use when assembling references for the final report."
+    )
     input_schema = CitationGeneratorInput
     output_schema = CitationGeneratorOutput
     tags = ["compute", "citation"]

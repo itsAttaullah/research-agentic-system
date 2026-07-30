@@ -13,7 +13,11 @@ from sra.tools.schemas import SearchHit, SearchInput, SearchOutput
 
 class AcademicPaperSearchTool(BaseTool):
     name = "academic_paper_search"
-    description = "Search academic papers using Semantic Scholar."
+    description = (
+        "Search academic papers via Semantic Scholar. "
+        "Use for peer-reviewed evidence, methods, prevalence stats, and citations. "
+        "Not for product reviews or breaking news."
+    )
     input_schema = SearchInput
     output_schema = SearchOutput
     tags = ["search", "academic"]

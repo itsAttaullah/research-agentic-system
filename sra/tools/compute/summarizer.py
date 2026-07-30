@@ -33,7 +33,10 @@ class SummarizerOutput(BaseModel):
 
 class SummarizerTool(BaseTool):
     name = "summarizer"
-    description = "Summarize long text extractively into the top N sentences."
+    description = (
+        "Summarize long text extractively into the top N sentences. "
+        "Use after fetching a long page/PDF when only the key points are needed."
+    )
     input_schema = SummarizerInput
     output_schema = SummarizerOutput
     tags = ["compute", "nlp"]

@@ -30,7 +30,10 @@ class TableGeneratorOutput(BaseModel):
 
 class TableGeneratorTool(BaseTool):
     name = "table_generator"
-    description = "Build a markdown, CSV, or JSON table from columns and rows."
+    description = (
+        "Build a markdown, CSV, or JSON table from columns and rows. "
+        "Use to structure comparisons (competitors, pricing, features)."
+    )
     input_schema = TableGeneratorInput
     output_schema = TableGeneratorOutput
     tags = ["compute", "format"]

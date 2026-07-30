@@ -62,7 +62,7 @@ class InMemoryToolRegistry:
                 "name": tool.name,
                 "description": tool.description,
                 "tags": list(tool.tags),
-                "input_schema": tool.input_schema.model_json_schema(),
+                "input_fields": sorted(tool.input_schema.model_fields.keys()),
             }
             for tool in sorted(self._tools.values(), key=lambda item: item.name)
         ]

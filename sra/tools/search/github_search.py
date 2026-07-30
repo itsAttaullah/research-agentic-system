@@ -13,7 +13,11 @@ from sra.tools.schemas import SearchHit, SearchInput, SearchOutput
 
 class GitHubSearchTool(BaseTool):
     name = "github_search"
-    description = "Search GitHub repositories relevant to a research query."
+    description = (
+        "Search GitHub repositories related to a software/tooling query. "
+        "Use for open-source alternatives, adoption signals, and technical feasibility — "
+        "not for general market sizing."
+    )
     input_schema = SearchInput
     output_schema = SearchOutput
     tags = ["search", "github", "code"]
